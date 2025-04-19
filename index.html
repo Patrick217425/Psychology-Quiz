@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Psychology Basics Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f4f0;
+      color: #1f2a44;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #1f2a44;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .options button {
+      display: block;
+      margin: 5px 0;
+      padding: 10px;
+      width: 100%;
+      background-color: #e0e0d1;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .options button:hover {
+      background-color: #c8c8b8;
+    }
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .score {
+      margin-top: 20px;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Psychology Basics Quiz</h1>
+  <div class="quiz">
+    <div class="question" id="question">Loading question...</div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="score" id="score">Score: 0</div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is the study of behavior and mental processes?",
+        options: ["Biology", "Psychology", "Sociology", "Philosophy"],
+        answer: "Psychology"
+      },
+      {
+        question: "Which part of the brain is responsible for memory?",
+        options: ["Cerebellum", "Amygdala", "Hippocampus", "Thalamus"],
+        answer: "Hippocampus"
+      },
+      {
+        question: "Who is known as the father of psychoanalysis?",
+        options: ["Carl Jung", "B.F. Skinner", "Sigmund Freud", "Jean Piaget"],
+        answer: "Sigmund Freud"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById("question").textContent = q.question;
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+      q.options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.onclick = () => checkAnswer(option);
+        optionsDiv.appendChild(btn);
+      });
+      document.getElementById("feedback").textContent = "";
+    }
+
+    function checkAnswer(selected) {
+      const correct = questions[currentQuestion].answer;
+      const feedback = document.getElementById("feedback");
+      if (selected === correct) {
+        feedback.textContent = "✅ Correct!";
+        score++;
+      } else {
+        feedback.textContent = `❌ Incorrect. The correct answer was: ${correct}`;
+      }
+      document.getElementById("score").textContent = `Score: ${score}`;
+      currentQuestion++;
+      setTimeout(() => {
+        if (currentQuestion < questions.length) {
+          loadQuestion();
+        } else {
+          document.getElementById("question").textContent = "Quiz Completed!";
+          document.getElementById("options").innerHTML = "";
+          feedback.textContent = `Your final score is ${score}/${questions.length}.`;
+        }
+      }, 1000);
+    }
+
+    loadQuestion();
+  </script>
+
+</body>
+</html>
